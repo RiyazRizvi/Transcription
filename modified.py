@@ -3,10 +3,10 @@ from fastapi import FastAPI, File, UploadFile
 from pathlib import Path
 import shutil
 
-# Initialize the FastAPI app
+
 app = FastAPI()
 
-# Load the Whisper model on the CPU
+
 model = whisper.load_model("base", device='cpu')
 
 # Define the endpoint for file upload and transcription
@@ -31,10 +31,10 @@ async def transcribe_file(file: UploadFile = File(...)):
         result = model.transcribe(audio)
         transcription = result["text"]
 
-        # Save the transcription to a text file
-        output_file_path = f"{Path(file.filename).stem}_transcription.txt"
-        with open(output_file_path, "w") as transcription_file:
-            transcription_file.write(transcription)
+        # # Save the transcription to a text file
+        # output_file_path = f"{Path(file.filename).stem}_transcription.txt"
+        # with open(output_file_path, "w") as transcription_file:
+        #     transcription_file.write(transcription)
 
         # Clean up the temporary file
         Path(temp_path).unlink()
@@ -42,7 +42,7 @@ async def transcribe_file(file: UploadFile = File(...)):
         return {
             "filename": file.filename,
             "transcription": transcription,
-            "output_file": output_file_path,
+            #"output_file": output_file_path,
         }
 
     except Exception as e:
